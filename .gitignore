@@ -1,0 +1,43 @@
+# Binary outputs & Executables
+/bin/
+*.exe
+*.exe.test
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+WebGo
+
+# SQLite & Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+.trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary files
+*.log
+tmp/
+temp/
