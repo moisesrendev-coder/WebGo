@@ -15,6 +15,7 @@ type application struct {
 	userRepo    UserRepository
 	mux         *http.ServeMux
 	templateDir string
+	publicPath  string
 	tp          *TemplateRenderer
 }
 
@@ -32,6 +33,7 @@ func main() {
 		infoLog:     log.New(os.Stdout, "INFO\t", log.Ltime|log.LstdFlags),
 		userRepo:    NewSQLUserRepository(db),
 		templateDir: "templates",
+		publicPath:  "public",
 	}
 
 	app.tp = NewTemplateRenderer(app.templateDir, true)

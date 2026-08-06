@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"html/template"
 	"net/http"
 	"path"
@@ -30,11 +31,14 @@ func (t *TemplateRenderer) Render(w http.ResponseWriter, templateName string, da
 		return
 	}
 
-	err = tmpl.Execute(w, data)
+	buf := new(bytes.Buffer)
+	err = tmpl.ExecuteTemplate(buf, "base.html", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	buf.WriteTo(w)
 }
 
 func (t *TemplateRenderer) getTemplate(templateName string) (*template.Template, error) {
@@ -65,7 +69,7 @@ func (t *TemplateRenderer) parseTemplate(templateName string) (*template.Templat
 
 	files := []string{templatePath}
 
-	layoutPath := path.Join(t.templateDir, "layout/*html")
+	layoutPath := path.Join(t.templateDir, "layouts/*html")
 	layouts, err := filepath.Glob(layoutPath)
 	if err == nil {
 		files = append(files, layouts...)
