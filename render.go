@@ -4,10 +4,21 @@ import (
 	"net/http"
 )
 
-func (app *application) render(w http.ResponseWriter, filename string, data interface{}) {
+func (app *application) render(w http.ResponseWriter, r *http.Request, filename string, data *templateData) {
 	if app.tp == nil {
 		http.Error(w, "template rendering engine is not initialized", http.StatusInternalServerError)
 		return
 	}
-	app.tp.Render(w, filename, data)
+
+	app.tp.Render(w, filename, app.defaultTemplateData(data, r))
+}
+
+func (app *application) defaultTemplateData(data *templateData, r *http.Request) *templateData {
+	if data == nil {
+		data = &templateData{}
+	}
+
+	data.Flash = app.session.PopString(r, "flash")
+
+	return data
 }
