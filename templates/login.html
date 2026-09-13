@@ -1,28 +1,56 @@
 {{define "content"}}
-<div class="container">
-  <div class="auth-form">
-    <h2>Login</h2>
+<div class="py-6 sm:py-12 flex justify-center">
+  <div class="w-full max-w-md p-8 rounded-3xl bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl shadow-2xl shadow-orange-500/5 relative overflow-hidden">
+    <!-- Accent glow -->
+    <div class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="error-message">
-        </div>
-      <form action="/login" method="post" autocomplete="off">
-        <div class="form-group">
-          <label for="email">Email address:</label>
-          <input type="text" id="email" name="email" value="{{.Get "email"}}" required>
-          <p class="inline-error"></p>
-        </div>
+    {{with .Form}}
+    <div class="text-center mb-8 relative z-10">
+      <div class="inline-flex w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 items-center justify-center text-xl mb-3 shadow-inner">
+        🔒
+      </div>
+      <h2 class="text-2xl font-extrabold tracking-tight text-white">Iniciar Sesión</h2>
 
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-          <p class="inline-error"></p>
-        </div>
+      <p class="text-xs text-slate-400 mt-1 font-medium">Ingresa a tu cuenta de HackerNews Clone</p>
+    </div>
 
-      <button type="submit" class="btn-primary">Login</button>
+    {{with .Errors.Get "generic"}}
+        <div class="error-message mb-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold text-center">
+            {{.}}
+        </div>
+    {{end}}
+
+    <form action="/login" method="post" autocomplete="off" class="space-y-5 relative z-10">
+      <div class="space-y-1.5">
+        <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Correo Electrónico</label>
+        <input type="text" id="email" name="email" value="{{.Get "email"}}" placeholder="tu@email.com" required
+          class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
+        {{with .Errors.Get "email"}}
+        <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+        {{.}}
+        </p>
+        {{end}}
+      </div>
+
+      <div class="space-y-1.5">
+        <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Contraseña</label>
+        <input type="password" id="password" value="{{.Get "password"}}" name="password" placeholder="••••••••" required
+          class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
+        {{with .Errors.Get "password"}}
+        <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+        {{.}}
+        </p>
+        {{end}}
+      </div>
+
+      <button type="submit"
+        class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-sm shadow-lg shadow-orange-500/25 active:scale-[0.98] transition-all">
+        Iniciar Sesión
+      </button>
     </form>
-
-    <p class="auth-link">
-      Don't have an account? <a href="/register">Register here</a>
+    {{end}}
+    <p class="text-center text-xs text-slate-400 mt-6 font-medium relative z-10">
+      ¿No tienes una cuenta? <a href="/register" class="text-orange-400 font-bold hover:underline">Regístrate aquí</a>
     </p>
   </div>
 </div>
