@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrInvalidCredentials = errors.New("invalid credentials")
 
 type UserRepository interface {
 	CreateUser(name, email, hashedPassword, avatar string) (int64, error)
@@ -85,6 +88,23 @@ func (r *SQLUserRepository) GetUserByEmail(email string) (*User, error) {
 	user.Profile.UserID = user.ID
 
 	return &user, nil
+}
+
+func (r *SQLUserRepository) Authenticate(email, password string) (int, error) {
+
+	user, err := r.GetUserByEmail(email)
+	if err != nil {
+		return 0, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(password))
+	if err != nil {
+		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+			return 0, ErrInvalidCredentials
+		}
+		return 0, err
+	}
+	return user.ID, nil
 }
 
 func (r *SQLUserRepository) GetUsers() ([]User, error) {
