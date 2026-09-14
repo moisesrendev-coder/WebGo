@@ -12,11 +12,14 @@
     <nav class="flex items-center gap-1 sm:gap-2">
       <a href="/" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">Home</a>
       <a href="/about" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">About</a>
+    {{if .IsAuthenticated}}
       <a href="/submit" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">Submit</a>
+      <a href="/logout" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-all">Logout</a>
+    {{else}}
       <a href="/login" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">Login</a>
       <a href="/register" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-orange-400 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/20 transition-all">Register</a>
+    {{end}}
       <a href="/contact" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all">Contact</a>
-      <a href="/logout" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-all">Logout</a>
     </nav>
   </div>
 </header>

@@ -4,6 +4,7 @@
     <!-- Accent glow -->
     <div class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
+    {{with .Form}}
     <div class="text-center mb-8 relative z-10">
       <div class="inline-flex w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 items-center justify-center text-xl mb-3 shadow-inner">
         🚀
@@ -12,36 +13,55 @@
       <p class="text-xs text-slate-400 mt-1 font-medium">Únete a la comunidad de desarrolladores</p>
     </div>
 
-    <div class="error-message hidden mb-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold text-center">
-    </div>
+    {{with .Errors.Get "generic"}}
+        <div class="error-message mb-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold text-center">
+            {{.}}
+        </div>
+    {{end}}
 
     <form action="/register" method="post" autocomplete="off" class="space-y-4 relative z-10">
       <div class="space-y-1.5">
         <label for="name" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Nombre Completo</label>
-        <input type="text" id="name" name="name" value="" placeholder="John Doe" required
+        <input type="text" id="name" name="name" value="{{.Get "email"}}" placeholder="John Doe" required
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+        {{with .Errors.Get "email"}}
+            <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+            {{.}}
+            </p>
+        {{end}}
       </div>
 
       <div class="space-y-1.5">
         <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Correo Electrónico</label>
-        <input type="text" id="email" name="email" value="" placeholder="tu@email.com" required
+        <input type="text" id="email" name="email" value="{{.Get "email"}}" placeholder="tu@email.com" required
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+        {{with .Errors.Get "email"}}
+            <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+            {{.}}
+            </p>
+        {{end}}
       </div>
 
       <div class="space-y-1.5">
         <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Contraseña</label>
-        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required
+        <input type="password" id="password" name="password" value="{{.Get "password"}}" placeholder="Mínimo 6 caracteres" required
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+        {{with .Errors.Get "password"}}
+            <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+            {{.}}
+            </p>
+        {{end}}
       </div>
 
       <div class="space-y-1.5">
         <label for="avatar" class="block text-xs font-bold uppercase tracking-wider text-slate-300">URL de Avatar (Opcional)</label>
-        <input type="url" id="avatar" name="avatar" value="" placeholder="https://example.com/avatar.jpg"
+        <input type="url" id="avatar" name="avatar" value="{{.Get "avatar"}}" placeholder="https://example.com/avatar.jpg"
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+        {{with .Errors.Get "avatar"}}
+            <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+            {{.}}
+            </p>
+        {{end}}
       </div>
 
       <button type="submit"
@@ -49,6 +69,7 @@
         Registrarse
       </button>
     </form>
+    {{end}}
 
     <p class="text-center text-xs text-slate-400 mt-6 font-medium relative z-10">
       ¿Ya tienes una cuenta? <a href="/login" class="text-orange-400 font-bold hover:underline">Inicia sesión aquí</a>

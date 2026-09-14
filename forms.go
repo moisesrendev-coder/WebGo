@@ -8,15 +8,15 @@ import (
 	"unicode/utf8"
 )
 
-type errors map[string][]string
+type formErrors map[string][]string
 
 var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$")
 
-func (e errors) Add(field, message string) {
+func (e formErrors) Add(field, message string) {
 	e[field] = append(e[field], message)
 }
 
-func (e errors) Get(field string) string {
+func (e formErrors) Get(field string) string {
 	es := e[field]
 	if len(es) == 0 {
 		return ""
@@ -26,13 +26,13 @@ func (e errors) Get(field string) string {
 
 type Form struct {
 	url.Values
-	Errors errors
+	Errors formErrors
 }
 
 func NewForm(form url.Values) *Form {
 	return &Form{
 		form,
-		errors(map[string][]string{}),
+		formErrors(map[string][]string{}),
 	}
 }
 
