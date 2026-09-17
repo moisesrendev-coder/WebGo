@@ -77,8 +77,8 @@ func (r *SQLUserRepository) CreateUser(name, email, plainPassword, avatar string
 }
 
 func (r *SQLUserRepository) GetUserByEmail(email string) (*User, error) {
-	stmt := `SELECT u.id, u.name, u.email,  u.hashed_password, u.created_at, p.avatar FROM users u
-	INNER JOIN profile p ON u.id = p.user_id WHERE u.email = ?`
+	stmt := `SELECT u.id, u.name, u.email, u.hashed_password, u.created_at, COALESCE(p.avatar, '') FROM users u
+	LEFT JOIN profile p ON u.id = p.user_id WHERE u.email = ?`
 
 	row := r.db.QueryRow(stmt, email)
 	var user User

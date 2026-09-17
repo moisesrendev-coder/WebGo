@@ -20,6 +20,11 @@ type templateData struct {
 	Form            *Form
 	IsAuthenticated bool
 	Flash           string
+	Posts           []Post
+	Comments        []Comment
+	Metadata        Metadata
+	Post            *Post
+	Filter          Filter
 }
 
 func NewTemplateRenderer(templateDir string, isDev bool) *TemplateRenderer {

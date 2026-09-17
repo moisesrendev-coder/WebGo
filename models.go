@@ -14,7 +14,7 @@ type User struct {
 
 // Profile belongs to a user
 type Profile struct {
-	UserID  int       `json:"user_id"`
-	Avatar  string    `json:"avatar"`
-	Created time.Time `json:"created"`
+	UserID    int       `json:"user_id"`
+	Avatar    string    `json:"avatar"`
+	CreatedAt time.Time `json:"created_at"`
 }

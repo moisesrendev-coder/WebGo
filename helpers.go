@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime/debug"
@@ -10,4 +11,13 @@ func (app *application) serveError(w http.ResponseWriter, err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
 	app.errorLog.Output(2, trace)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+}
+
+func (app *application) getUserFromContext(ctx context.Context) *User {
+	u, ok := ctx.Value(contextUserKey).(*User)
+	if !ok {
+		panic("user not found in context")
+	}
+
+	return u
 }

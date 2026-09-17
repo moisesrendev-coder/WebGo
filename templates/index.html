@@ -16,9 +16,12 @@
     </div>
   </div>
 
+  <!-- Filter Form Partial -->
+  {{template "filter-form.html" .}}
+
   <!-- Posts Feed -->
   <div class="space-y-3">
-    {{range $index := 5}}
+    {{range $index, $post := .Posts}}
     <div class="group p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 hover:border-orange-500/40 hover:bg-slate-900/90 hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300 flex items-start gap-4">
       <span class="w-9 h-9 rounded-xl bg-slate-800/80 border border-slate-700/50 text-slate-400 font-bold text-sm flex items-center justify-center shrink-0 group-hover:border-orange-500/30 group-hover:text-orange-400 transition-colors">
         {{$index}}
@@ -26,38 +29,67 @@
 
       <div class="flex-1 min-w-0">
         <div class="flex items-baseline gap-2 flex-wrap mb-1.5">
-          <a href="#" class="text-base font-bold text-slate-100 group-hover:text-orange-400 transition-colors line-clamp-2" target="_blank">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+          <a href="{{$post.URL}}" class="text-base font-bold text-slate-100 group-hover:text-orange-400 transition-colors line-clamp-2" target="_blank">
+            {{$post.Title}}
           </a>
-          <span class="text-xs font-medium text-slate-500 hover:text-slate-400 transition-colors">(example.com)</span>
+          {{if $post.Host}}
+          <span class="text-xs font-medium text-slate-500 hover:text-slate-400 transition-colors">({{$post.Host}})</span>
+          {{end}}
         </div>
 
         <div class="flex items-center gap-2.5 text-xs font-medium text-slate-400 flex-wrap">
-          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 font-bold">
-            ▲ 125 puntos
+          <a href="/vote?post_id={{$post.ID}}">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 font-bold">
+            ▲ {{$post.GetVoteCountsHuman}}
           </span>
+          </a>
           <span class="text-slate-700">•</span>
-          <span>por <a href="#" class="font-semibold text-slate-300 hover:text-orange-400 transition-colors">usuario_demo</a></span>
+          <span>por <a href="#" class="font-semibold text-slate-300 hover:text-orange-400 transition-colors">{{if $post.UserName}}{{$post.UserName}}{{else}}Anónimo{{end}}</a></span>
           <span class="text-slate-700">•</span>
-          <span class="text-slate-500">hace 3 horas</span>
+          <span class="text-slate-500">{{$post.CreatedAtHuman}}</span>
           <span class="text-slate-700">•</span>
-          <a href="#" class="hover:text-orange-400 transition-colors flex items-center gap-1">
-            💬 42 comentarios
+          <a href="/comments?post_id={{.ID}}" class="hover:text-orange-400 transition-colors flex items-center gap-1">
+            💬 {{$post.GetCommentsCountHuman}}
           </a>
         </div>
       </div>
+    </div>
+    {{else}}
+    <div class="p-8 text-center bg-slate-900/40 rounded-2xl border border-slate-800/60">
+      <p class="text-slate-400 text-sm">No hay publicaciones disponibles.</p>
     </div>
     {{end}}
   </div>
 
   <!-- Pagination -->
-  <div class="flex justify-center items-center gap-3 pt-6">
-    <a href="#" class="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-sm font-semibold transition-all shadow-sm">
-      ← Anterior
-    </a>
-    <a href="#" class="px-5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-orange-500/50 hover:bg-slate-800/80 text-sm font-semibold transition-all shadow-sm">
-      Siguiente →
-    </a>
+  {{if gt .Metadata.TotalRecords 0}}
+  <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-800/60">
+    <div class="text-xs sm:text-sm text-slate-400 font-medium">
+      Página <span class="font-bold text-slate-200">{{.Metadata.CurrentPage}}</span> de <span class="font-bold text-slate-200">{{.Metadata.LastPage}}</span> (<span class="font-bold text-slate-200">{{.Metadata.TotalRecords}}</span> publicaciones)
+    </div>
+
+    <div class="flex items-center gap-3">
+      {{if gt .Metadata.PrevPage 0}}
+      <a href="/?page={{.Metadata.PrevPage}}&page_size={{.Metadata.PageSize}}{{if $.Filter}}&q={{$.Filter.Query}}{{end}}" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 text-sm font-semibold transition-all shadow-sm">
+        ← Anterior
+      </a>
+      {{else}}
+      <span class="px-4 py-2 rounded-xl bg-slate-900/40 border border-slate-800/40 text-slate-600 text-sm font-semibold cursor-not-allowed">
+        ← Anterior
+      </span>
+      {{end}}
+
+      {{if gt .Metadata.NextPage 0}}
+      <a href="/?page={{.Metadata.NextPage}}&page_size={{.Metadata.PageSize}}{{if $.Filter}}&q={{$.Filter.Query}}{{end}}" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-orange-500/50 hover:bg-slate-800/80 text-sm font-semibold transition-all shadow-sm">
+        Siguiente →
+      </a>
+      {{else}}
+      <span class="px-4 py-2 rounded-xl bg-slate-900/40 border border-slate-800/40 text-slate-600 text-sm font-semibold cursor-not-allowed">
+        Siguiente →
+      </span>
+      {{end}}
+    </div>
   </div>
+  {{end}}
 </div>
 {{end}}

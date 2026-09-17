@@ -15,6 +15,7 @@ type application struct {
 	errorLog    *log.Logger
 	infoLog     *log.Logger
 	userRepo    UserRepository
+	postRepo    PostRepository
 	mux         *http.ServeMux
 	templateDir string
 	publicPath  string
@@ -39,6 +40,7 @@ func main() {
 		errorLog:    log.New(os.Stderr, "ERROR\t", log.Ltime|log.LstdFlags|log.Lmicroseconds|log.Lshortfile),
 		infoLog:     log.New(os.Stdout, "INFO\t", log.Ltime|log.LstdFlags),
 		userRepo:    NewSQLUserRepository(db),
+		postRepo:    NewSQLPostRepository(db),
 		templateDir: "templates",
 		publicPath:  "public",
 		session:     session,
@@ -50,6 +52,7 @@ func main() {
 	if err := app.serve(); err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 func connectToDatabase(name string) (*sql.DB, error) {

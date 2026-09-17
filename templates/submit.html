@@ -4,6 +4,7 @@
     <!-- Accent glow -->
     <div class="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
+    {{with .Form}}
     <div class="text-center mb-8 relative z-10">
       <div class="inline-flex w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 items-center justify-center text-xl mb-3 shadow-inner">
         📝
@@ -12,22 +13,36 @@
       <p class="text-xs text-slate-400 mt-1 font-medium">Comparte contenido interesante con la comunidad</p>
     </div>
 
-    <div class="error-message hidden mb-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold text-center">
-    </div>
+
+
+    {{with .Errors.Get "generic"}}
+      <div class="error-message mb-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold text-center">
+        {{.}}
+      </div>
+    {{end}}
 
     <form action="/submit" method="post" autocomplete="off" class="space-y-5 relative z-10">
       <div class="space-y-1.5">
         <label for="title" class="block text-xs font-bold uppercase tracking-wider text-slate-300">Título de la Publicación</label>
-        <input type="text" id="title" name="title" value="" placeholder="Ej. Show HN: Mi nuevo proyecto en Go" required
+        <input type="text" id="title" name="title" value="{{.Get "title"}}" placeholder="Ej. Show HN: Mi nuevo proyecto en Go" required
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+
+        {{with .Errors.Get "title"}}
+          <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+            {{.}}
+          </p>
+        {{end}}
       </div>
 
       <div class="space-y-1.5">
         <label for="url" class="block text-xs font-bold uppercase tracking-wider text-slate-300">URL del Enlace</label>
-        <input type="url" id="url" name="url" value="" placeholder="https://github.com/..." required
+        <input type="url" id="url" name="url" value="{{.Get "url"}}" placeholder="https://github.com/..." required
           class="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all">
-        <p class="inline-error text-xs text-rose-400 mt-1 font-medium"></p>
+        {{with .Errors.Get "url"}}
+        <p class="inline-error text-xs text-rose-400 mt-1 font-medium">
+          {{.}}
+        </p>
+        {{end}}
       </div>
 
       <button type="submit"
@@ -35,6 +50,7 @@
         Enviar Publicación
       </button>
     </form>
+    {{end}}
   </div>
 </div>
 {{end}}

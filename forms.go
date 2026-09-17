@@ -40,7 +40,7 @@ func (f *Form) Required(fields ...string) *Form {
 	for _, field := range fields {
 		value := f.Get(field)
 		if strings.TrimSpace(value) == "" {
-			f.Errors.Add(field, "This field is required")
+			f.Errors.Add(field, fmt.Sprintf("This field %s is required", field))
 		}
 	}
 
@@ -58,7 +58,7 @@ func (f *Form) MaxLength(field string, n int) *Form {
 	}
 
 	if utf8.RuneCountInString(value) > n {
-		f.Errors.Add(field, fmt.Sprintf("This field is too long, (maximun %d characteres)", n))
+		f.Errors.Add(field, fmt.Sprintf("This field %s is too long, (maximun %d characteres)", field, n))
 	}
 
 	return f
@@ -71,7 +71,7 @@ func (f *Form) MinLength(field string, n int) *Form {
 	}
 
 	if utf8.RuneCountInString(value) < n {
-		f.Errors.Add(field, fmt.Sprintf("This field is too short, (minimun %d characteres)", n))
+		f.Errors.Add(field, fmt.Sprintf("This field %s is too short, (minimun %d characteres)", field, n))
 	}
 
 	return f
@@ -84,7 +84,7 @@ func (f *Form) Matches(field string, pattern *regexp.Regexp) *Form {
 	}
 
 	if !pattern.MatchString(value) {
-		f.Errors.Add(field, "This field is invalid")
+		f.Errors.Add(field, fmt.Sprintf("This field %s is invalid", field))
 	}
 
 	return f
